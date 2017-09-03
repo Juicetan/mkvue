@@ -1,0 +1,42 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "es6-promise": "^4.1.1",
+    "localforage": "^1.5.0",
+    "vue": "^2.4.1",
+    "vue-router": "^2.7.0",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.12",
+    "event-stream": "^3.3.4",
+    "fs": "0.0.1-security",
+    "fs-utils": "^0.7.0",
+    "git-rev": "^0.2.1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-file-include": "^1.1.0",
+    "gulp-flatten": "^0.3.1",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-insert": "^0.5.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-replace": "^0.6.1",
+    "gulp-rev": "^7.1.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-tap": "^1.0.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-usemin": "^0.3.28",
+    "gulp-util": "^3.0.8",
+    "run-sequence": "^2.0.0"
+  }
+}

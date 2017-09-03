@@ -1,0 +1,75 @@
+@import 'mixins';
+@import 'variables';
+
+@import '../../components/loadingView/loadinView';
+@import '../../components/loadingView/loadinBar';
+
+html,body{
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background-color: $color-background;
+}
+body{
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-weight: normal;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.container{
+  position: relative;
+  height: 100%;
+  transition: opacity 0.3s linear;
+  opacity: 0;
+  &.loaded{
+    opacity: 1;
+  }
+  &.loading{
+    .loading-view{
+      display: block;
+    }
+  }
+  .loading-view{
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .update-prompt{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 14px;
+    padding: 10px 20px;
+    color: white;
+    background-color: rgba($color-blue,0.9);
+    z-index: $header-z + 3;
+    will-change: transform;
+    transform: translateY(100%);
+    transition: transform 0.2s linear;
+    .msg-blk{
+      float: left;
+      line-height: 31px;
+    }
+    .action-trigger{
+      @include clickable;
+      float: right;
+      background-color: white;
+      color: $color-blue;
+      padding: 7px 10px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 16px;
+    }
+  }
+  &.has-update{
+    .update-prompt{
+      transform: translateY(0);
+    }
+  }
+}
