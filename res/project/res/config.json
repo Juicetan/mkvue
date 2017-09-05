@@ -1,0 +1,10 @@
+{
+  "defaults":{
+    "HOST": "//",
+    "res": {
+    },
+    "store": {
+    },
+    "debug": false
+  }
+}
