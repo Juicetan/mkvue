@@ -4,7 +4,9 @@ var cmd = require('commander');
 var InitCon = require('./controllers/InitializationController');
 
 cmd
-  .version('1.0.0');
+  .version('1.0.0')
+  .description('A NodeJS command line utility to assist in creating componentized VueJS applications.')
+  .parse(process.argv);
 
 cmd.command('project [path]')
   .description('Create boilerplate project.  If no path is provided current working directory will be used.')
