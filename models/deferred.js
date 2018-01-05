@@ -1,3 +1,20 @@
+Promise.settle = function(promisesArr){
+  var reflectedArr = promisesArr.map(function(promise){
+    return promise.then(function(successResult){
+      return {
+        result: successResult,
+        status: 'resolved'
+      };
+    },function(errorResult){
+      return {
+        result: errorResult,
+        status: 'rejected'
+      };
+    });
+  });
+  return Promise.all(reflectedArr);
+};
+
 var Deferred = function(){
   var def = this;
   /**
