@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 var cmd = require('commander');
-var InitCon = require('./controllers/InitializationController');
+var InitCon = require('./controllers/initializationController');
+var CompCon = require('./controllers/componentController');
 
 cmd
   .version('1.0.0')
@@ -18,6 +19,7 @@ cmd.command('project [path]')
 cmd.command('component <componentName>')
   .action(function(componentName){
     console.log('>2 ',componentName);
+    
   });
   
 cmd.parse(process.argv);
