@@ -18,8 +18,8 @@ cmd.command('project [path]')
 
 cmd.command('component <componentName>')
   .action(function(componentName){
-    console.log('>2 ',componentName);
-    
+    var path = process.cwd();
+    CompCon.createComp(path,componentName);
   });
   
 cmd.parse(process.argv);
