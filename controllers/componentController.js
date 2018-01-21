@@ -10,9 +10,8 @@ var TEMPLATEPATH = path.resolve(__dirname,'../res/component');
 var COMPONENTPATH = './app/components';
 
 var ComponentController = {
-  createFiles: function(projectPath, compName){    
+  createFiles: function(newCompPath, compName){    
     var def = new Deferred();
-    var newCompPath = path.resolve(projectPath,COMPONENTPATH+"/"+compName);
 
     fse.copy(TEMPLATEPATH, newCompPath).then(function(){
       fs.renameSync(path.resolve(newCompPath,'./_component.scss'),path.resolve(newCompPath,'./_'+compName+'.scss'));
@@ -24,13 +23,35 @@ var ComponentController = {
 
     return def.promise;
   },
+  replaceNames: function(compPath, compName){
+    var def = new Deferred();
+
+    var className = StrUtil.camelize(compName.replaceAll('-',' '));
+    className = className.charAt(0).toUpperCase()+className.substring(1);
+
+    Promise.settle([
+      FileUtil.replace(path.resolve(compPath,'./_'+compName+'.scss'),/component/g,compName),
+      FileUtil.replace(path.resolve(compPath,'./'+compName+'.html'),/component/g,compName),
+      FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),/component/g,compName)      
+    ]).then(function(){
+      return FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),/Component/g,className);
+    }).then(function(){
+      def.resolve();
+    });
+
+    return def.promise;
+  },
   addDependencies: function(){
 
   },
-  createComp: function(path, compName){
+  createComp: function(workingPath, compName){
+    var con = this;
     compName = FileUtil.resolveComponentName(compName);
-    this.createFiles(path,compName).then(function(){
-      console.log('> component files created')
+    var newCompPath = path.resolve(workingPath,COMPONENTPATH+"/"+compName);
+
+    this.createFiles(newCompPath,compName).then(function(){
+      console.log('> component files created');
+      return con.replaceNames(newCompPath,compName);
     });
   }
 };
