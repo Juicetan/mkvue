@@ -2,17 +2,14 @@ var Deferred = require('../models/deferred');
 var fs = require('fs');
 var fse = require('fs-extra');
 var path = require('path');
+
 var StrUtil = require('../utils/string');
+var FileUtil = require('../utils/file');
 
 var TEMPLATEPATH = path.resolve(__dirname,'../res/component');
 var COMPONENTPATH = './app/components';
 
 var ComponentController = {
-  resolveComponentName: function(str){
-    return str.replaceAll(' ','-')
-              .replaceAll('.','')
-              .replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-  },
   createFiles: function(projectPath, compName){    
     var def = new Deferred();
     var newCompPath = path.resolve(projectPath,COMPONENTPATH+"/"+compName);
@@ -31,11 +28,11 @@ var ComponentController = {
 
   },
   createComp: function(path, compName){
-    compName = this.resolveComponentName(compName);
+    compName = FileUtil.resolveComponentName(compName);
     this.createFiles(path,compName).then(function(){
       console.log('> component files created')
     });
-  },
+  }
 };
 
 module.exports = ComponentController;

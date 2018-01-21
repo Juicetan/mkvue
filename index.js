@@ -3,6 +3,7 @@
 var cmd = require('commander');
 var InitCon = require('./controllers/initializationController');
 var CompCon = require('./controllers/componentController');
+var RouteCon = require('./controllers/routeController');
 
 cmd
   .version('1.0.0')
@@ -20,6 +21,12 @@ cmd.command('component <componentName>')
   .action(function(componentName){
     var path = process.cwd();
     CompCon.createComp(path,componentName);
+  });
+
+cmd.command('route <routeName>')
+  .action(function(routeName){
+    var path = process.cwd();
+    RouteCon.createRoute(path,routeName);
   });
   
 cmd.parse(process.argv);
