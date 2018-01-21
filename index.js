@@ -4,6 +4,7 @@ var cmd = require('commander');
 var InitCon = require('./controllers/initializationController');
 var CompCon = require('./controllers/componentController');
 var RouteCon = require('./controllers/routeController');
+var ModelCon = require('./controllers/modelController');
 
 cmd
   .version('1.0.0')
@@ -27,6 +28,12 @@ cmd.command('route <routeName>')
   .action(function(routeName){
     var path = process.cwd();
     RouteCon.createRoute(path,routeName);
+  });
+
+cmd.command('model <modelName>')
+  .action(function(modelName){
+    var path = process.cwd();
+    ModelCon.createModel(path,modelName);
   });
   
 cmd.parse(process.argv);
