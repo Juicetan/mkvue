@@ -25,14 +25,14 @@
     display: inline-block;
     position: absolute;
     top: 0;
-    background-color: $color-green;
+    background-color: $color-lightblue;
     border-radius: 100%;
     animation: sk-bounce 2.0s infinite ease-in-out;
   }
   .dot2 {
     top: auto;
     bottom: 0;
-    background-color: $color-darkgreen;
+    background-color: $color-blue;
     animation-delay: -1.0s;
   }
 
