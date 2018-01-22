@@ -14,12 +14,12 @@ var COMPONENTPATH = './app/components';
 var STYLECOMPSTART = '/** components:start **/';
 var STYLECOMPEND = '/** components:end **/';
 var SCRIPTCOMPSTART = '<!-- components:script:start -->';
-var SCRIPTCOMPEND = '<!-- components:script:end -->';
+var SCRIPTCOMPEND = '  <!-- components:script:end -->';
 var TEMPLATECOMPSTART = '<!-- components:template:start -->';
-var TEMPLATECOMPEND = '<!-- components:template:end -->';
+var TEMPLATECOMPEND = '  <!-- components:template:end -->';
 
 var ComponentController = {
-  createFiles: function(newCompPath, compName){    
+  createFiles: function(newCompPath, compName){
     var def = new Deferred();
 
     fse.copy(TEMPLATEPATH, newCompPath).then(function(){
@@ -41,7 +41,7 @@ var ComponentController = {
     Promise.settle([
       FileUtil.replace(path.resolve(compPath,'./_'+compName+'.scss'),/component/g,compName),
       FileUtil.replace(path.resolve(compPath,'./'+compName+'.html'),/component/g,compName),
-      FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),/component/g,compName)      
+      FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),/component/g,compName)
     ]).then(function(){
       return FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),/Component/g,className);
     }).then(function(){
@@ -50,50 +50,34 @@ var ComponentController = {
 
     return def.promise;
   },
-  addComponentToStyles: function(workingPath, compName){
-    var styleFile = new File(path.resolve(workingPath,ROOTSTYLEPATH));
-    var extraction = StrUtil.extractBlock(styleFile.data,STYLECOMPSTART,STYLECOMPEND);
+  addComponentToDependency: function(file, importStr, delimStart, delimEnd){
+    var extraction = StrUtil.extractBlock(file.data,delimStart,delimEnd);
     var components = extraction.block.split('\n');
     components = components.filter(function(line){
       return line && line !== '' && line !== '  ' && line !== '\n';
     });
-    components.push("@import '../../components/"+compName+"/_"+compName+".scss';\n");
-    styleFile.data = extraction.preBlock + 
-                     STYLECOMPSTART +
+    components.push(importStr);
+    file.data = extraction.preBlock +
+                     delimStart + '\n' +
                      components.join('\n') +
-                     STYLECOMPEND + 
+                     delimEnd +
                      extraction.postBlock;
-    styleFile.saveData();
+    file.saveData();
+  },
+  addComponentToStyles: function(workingPath, compName){
+    var styleFile = new File(path.resolve(workingPath,ROOTSTYLEPATH));
+    var importStr = "@import '../../components/"+compName+"/_"+compName+".scss';\n";
+    this.addComponentToDependency(styleFile, importStr, STYLECOMPSTART, STYLECOMPEND);
   },
   addComponentToScripts: function(workingPath, compName){
     var indexFile = new File(path.resolve(workingPath,ROOTINDEXPATH));
-    var extraction = StrUtil.extractBlock(indexFile.data,SCRIPTCOMPSTART,SCRIPTCOMPEND);
-    var components = extraction.block.split('\n');
-    components = components.filter(function(line){
-      return line && line !== '' && line !== '  ' && line !== '\n';
-    });
-    components.push("  <script src='app/components/"+compName+"/"+compName+".js' type='text/javascript'></script>\n");
-    indexFile.data = extraction.preBlock + 
-                     SCRIPTCOMPSTART +
-                     components.join('\n') + '  ' +
-                     SCRIPTCOMPEND + 
-                     extraction.postBlock;
-    indexFile.saveData();
+    var importStr = "  <script src='app/components/"+compName+"/"+compName+".js' type='text/javascript'></script>\n";
+    this.addComponentToDependency(indexFile, importStr, SCRIPTCOMPSTART, SCRIPTCOMPEND);
   },
   addComponentToTemplates: function(workingPath, compName){
     var indexFile = new File(path.resolve(workingPath,ROOTINDEXPATH));
-    var extraction = StrUtil.extractBlock(indexFile.data,TEMPLATECOMPSTART,TEMPLATECOMPEND);
-    var components = extraction.block.split('\n');
-    components = components.filter(function(line){
-      return line && line !== '' && line !== '  ' && line !== '\n';
-    });
-    components.push("  @@include('app/components/"+compName+"/"+compName+".html')\n");
-    indexFile.data = extraction.preBlock + 
-                     TEMPLATECOMPSTART +
-                     components.join('\n') + '  ' +
-                     TEMPLATECOMPEND + 
-                     extraction.postBlock;
-    indexFile.saveData();
+    var importStr = "  @@include('app/components/"+compName+"/"+compName+".html')\n";
+    this.addComponentToDependency(indexFile, importStr, TEMPLATECOMPSTART, TEMPLATECOMPEND);
   },
   addDependencies: function(workingPath, compName){
     this.addComponentToStyles(workingPath, compName);

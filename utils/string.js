@@ -21,7 +21,7 @@ var StrUtil = {
     };
 
     return extraction;
-  }
+  },
 };
 
 module.exports = StrUtil;
