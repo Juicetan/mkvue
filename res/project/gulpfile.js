@@ -23,8 +23,7 @@ var browserSync = require('browser-sync').create();
 
 var paths = {
   dom: './*.html',
-  templates: './templates/**/*.html',
-  scripts: './js/**/*.js',
+  app: './app/**/*',
   images: './images/*',
   fonts: './fonts/*',
   resources: './res/*',
@@ -61,7 +60,7 @@ gulp.task('clean',function(){
 });
 
 gulp.task('gatherComponents',function(){
-  return gulp.src('./templates/**/*.html')
+  return gulp.src('./app/**/*.html')
     .pipe(replace(/<!-- tid:(.+?) -->/i, '<script type="x-template" id="$1">'))
     .pipe(insert.append('</script>'))
     .pipe(gulp.dest('./.tmp/templates/'));
@@ -77,29 +76,35 @@ gulp.task('assembleIndex',function(){
 
 gulp.task('gatherDevMaterials', function(){
   return es.concat(
-    gulp.src('./js/**').pipe(gulp.dest('./.tmp/js')),
+    gulp.src('./app/**/*').pipe(gulp.dest('./.tmp/app')),
     gulp.src('./images/**').pipe(gulp.dest('./.tmp/images')),
     gulp.src('./fonts/**').pipe(gulp.dest('./.tmp/fonts')),
     gulp.src('./res_dev/**').pipe(gulp.dest('./.tmp/res')),
-    gulp.src('./css/**/*.css').pipe(gulp.dest('./.tmp/css')),
-    gulp.src('./css/**/*.scss')
+    gulp.src('./app/**/*.css')
+      .pipe(flatten())
+      .pipe(gulp.dest('./.tmp/app/base/css')),
+    gulp.src('./app/**/*.scss')
+      .pipe(flatten())
       .pipe(sass())
       .pipe(prefix("last 2 versions"))
-      .pipe(gulp.dest('./.tmp/css'))
+      .pipe(gulp.dest('./.tmp/app/base/css'))
   );
 });
 
 gulp.task('gatherMaterials', function(){
   return es.concat(
-    gulp.src('./js/**').pipe(gulp.dest('./.tmp/js')),
+    gulp.src('./app/**/*').pipe(gulp.dest('./.tmp/app')),
     gulp.src('./images/**').pipe(gulp.dest('./.tmp/images')),
     gulp.src('./fonts/**').pipe(gulp.dest('./.tmp/fonts')),
     gulp.src('./res/**').pipe(gulp.dest('./.tmp/res')),
-    gulp.src('./css/**/*.css').pipe(gulp.dest('./.tmp/css')),
-    gulp.src('./css/**/*.scss')
+    gulp.src('./app/**/*.css')
+      .pipe(flatten())
+      .pipe(gulp.dest('./.tmp/app/base/css')),
+    gulp.src('./app/**/*.scss')
       .pipe(sass())
       .pipe(prefix("last 2 versions"))
-      .pipe(gulp.dest('./.tmp/css'))
+      .pipe(flatten())
+      .pipe(gulp.dest('./.tmp/app/base/css'))
   );
 });
 
