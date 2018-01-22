@@ -1,8 +1,10 @@
 @import 'mixins';
 @import 'variables';
 
+/** components:start **/
 @import '../../components/loadingView/loadinView';
 @import '../../components/loadingView/loadinBar';
+/** components:end **/
 
 html,body{
   position: relative;
