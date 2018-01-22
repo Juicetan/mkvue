@@ -8,8 +8,7 @@ var ModelCon = require('./controllers/modelController');
 
 cmd
   .version('1.0.0')
-  .description('A NodeJS command line utility to assist in creating componentized VueJS applications.')
-  .parse(process.argv);
+  .description('A NodeJS command line utility to assist in creating componentized VueJS applications.');
 
 cmd.command('project [path]')
   .description('Create boilerplate project.  If no path is provided current working directory will be used.')
@@ -19,9 +18,14 @@ cmd.command('project [path]')
   });
 
 cmd.command('component <componentName>')
-  .action(function(componentName){
+  .option('-r, --remove', 'Remove component')
+  .action(function(componentName, opts){
     var path = process.cwd();
-    CompCon.createComp(path,componentName);
+    if(opts.remove){
+      CompCon.removeComp(path,componentName);
+    } else{
+      CompCon.createComp(path,componentName);
+    }
   });
 
 cmd.command('route <routeName>')

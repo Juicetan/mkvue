@@ -54,35 +54,71 @@ var ComponentController = {
     var extraction = StrUtil.extractBlock(file.data,delimStart,delimEnd);
     var components = extraction.block.split('\n');
     components = components.filter(function(line){
-      return line && line !== '' && line !== '  ' && line !== '\n';
+      return line && line !== '' && line !== '  ' && line !== '\n' && line !== '\r';
+    });
+    components = components.map(function(line){
+      return line.replaceAll('\n','').replaceAll('\r','');
     });
     components.push(importStr);
     file.data = extraction.preBlock +
-                     delimStart + '\n' +
-                     components.join('\n') +
-                     delimEnd +
-                     extraction.postBlock;
+                delimStart + '\n' +
+                components.join('\n') + '\n' +
+                delimEnd +
+                extraction.postBlock;
+    file.saveData();
+  },
+  removeComponentFromDependency: function(file,compName, delimStart, delimEnd){
+    var extraction = StrUtil.extractBlock(file.data,delimStart,delimEnd);
+    var components = extraction.block.split('\n');
+    components = components.filter(function(line){
+      return line && line !== '' && line !== '  ' && line !== '\n' && line !== '\r' && line.indexOf(compName) < 0;
+    });
+    components = components.map(function(line){
+      return line.replaceAll('\n','').replaceAll('\r','');
+    });
+    file.data = extraction.preBlock +
+                delimStart + '\n' +
+                components.join('\n') + '\n' +
+                delimEnd +
+                extraction.postBlock;
     file.saveData();
   },
   addComponentToStyles: function(workingPath, compName){
     var styleFile = new File(path.resolve(workingPath,ROOTSTYLEPATH));
-    var importStr = "@import '../../components/"+compName+"/_"+compName+".scss';\n";
+    var importStr = "@import '../../components/"+compName+"/_"+compName+".scss';";
     this.addComponentToDependency(styleFile, importStr, STYLECOMPSTART, STYLECOMPEND);
+  },
+  removeComponentFromStyles: function(workingPath, compName){
+    var styleFile = new File(path.resolve(workingPath,ROOTSTYLEPATH));
+    this.removeComponentFromDependency(styleFile, compName, STYLECOMPSTART, STYLECOMPEND);
   },
   addComponentToScripts: function(workingPath, compName){
     var indexFile = new File(path.resolve(workingPath,ROOTINDEXPATH));
-    var importStr = "  <script src='app/components/"+compName+"/"+compName+".js' type='text/javascript'></script>\n";
+    var importStr = "  <script src='app/components/"+compName+"/"+compName+".js' type='text/javascript'></script>";
     this.addComponentToDependency(indexFile, importStr, SCRIPTCOMPSTART, SCRIPTCOMPEND);
+  },
+  removeComponentFromScripts: function(workingPath, compName){
+    var indexFile = new File(path.resolve(workingPath,ROOTINDEXPATH));
+    this.removeComponentFromDependency(indexFile, compName, SCRIPTCOMPSTART, SCRIPTCOMPEND);
   },
   addComponentToTemplates: function(workingPath, compName){
     var indexFile = new File(path.resolve(workingPath,ROOTINDEXPATH));
-    var importStr = "  @@include('app/components/"+compName+"/"+compName+".html')\n";
+    var importStr = "  @@include('app/components/"+compName+"/"+compName+".html')";
     this.addComponentToDependency(indexFile, importStr, TEMPLATECOMPSTART, TEMPLATECOMPEND);
+  },
+  removeComponentFromTemplates: function(workingPath, compName){
+    var indexFile = new File(path.resolve(workingPath,ROOTINDEXPATH));
+    this.removeComponentFromDependency(indexFile, compName, TEMPLATECOMPSTART, TEMPLATECOMPEND);
   },
   addDependencies: function(workingPath, compName){
     this.addComponentToStyles(workingPath, compName);
     this.addComponentToScripts(workingPath, compName);
     this.addComponentToTemplates(workingPath, compName);
+  },
+  removeDependencies: function(workingPath, compName){
+    this.removeComponentFromStyles(workingPath, compName);
+    this.removeComponentFromScripts(workingPath, compName);
+    this.removeComponentFromTemplates(workingPath, compName);
   },
   createComp: function(workingPath, compName){
     var con = this;
@@ -99,6 +135,13 @@ var ComponentController = {
     }).catch(function(e){
       console.log('> oh no',e);
     });
+  },
+  removeComp: function(workingPath, compName){
+    var folderPath = path.resolve(COMPONENTPATH,'./'+compName);
+    fse.emptyDirSync(folderPath);
+    fs.rmdirSync(folderPath);
+
+    this.removeDependencies(workingPath, compName);
   }
 };
 
