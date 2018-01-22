@@ -8,13 +8,15 @@ var FileUtil = require('../utils/file');
 var File = require('../models/file');
 
 var TEMPLATEPATH = path.resolve(__dirname,'../res/component');
-var ROOTINDEXPATH = './app/index.html';
+var ROOTINDEXPATH = './index.html';
 var ROOTSTYLEPATH = './app/base/css/styles.scss';
 var COMPONENTPATH = './app/components';
 var STYLECOMPSTART = '/** components:start **/';
 var STYLECOMPEND = '/** components:end **/';
-var SCRIPTCOMPSTART = '<!-- components:start -->';
-var SCRIPTCOMPEND = '<!-- components:end -->';
+var SCRIPTCOMPSTART = '<!-- components:script:start -->';
+var SCRIPTCOMPEND = '<!-- components:script:end -->';
+var TEMPLATECOMPSTART = '<!-- components:template:start -->';
+var TEMPLATECOMPEND = '<!-- components:template:end -->';
 
 var ComponentController = {
   createFiles: function(newCompPath, compName){    
@@ -53,7 +55,7 @@ var ComponentController = {
     var extraction = StrUtil.extractBlock(styleFile.data,STYLECOMPSTART,STYLECOMPEND);
     var components = extraction.block.split('\n');
     components = components.filter(function(line){
-      return line && line !== '';
+      return line && line !== '' && line !== '  ' && line !== '\n';
     });
     components.push("@import '../../components/"+compName+"/_"+compName+".scss';\n");
     styleFile.data = extraction.preBlock + 
@@ -63,8 +65,40 @@ var ComponentController = {
                      extraction.postBlock;
     styleFile.saveData();
   },
+  addComponentToScripts: function(workingPath, compName){
+    var indexFile = new File(path.resolve(workingPath,ROOTINDEXPATH));
+    var extraction = StrUtil.extractBlock(indexFile.data,SCRIPTCOMPSTART,SCRIPTCOMPEND);
+    var components = extraction.block.split('\n');
+    components = components.filter(function(line){
+      return line && line !== '' && line !== '  ' && line !== '\n';
+    });
+    components.push("  <script src='app/components/"+compName+"/"+compName+".js' type='text/javascript'></script>\n");
+    indexFile.data = extraction.preBlock + 
+                     SCRIPTCOMPSTART +
+                     components.join('\n') + '  ' +
+                     SCRIPTCOMPEND + 
+                     extraction.postBlock;
+    indexFile.saveData();
+  },
+  addComponentToTemplates: function(workingPath, compName){
+    var indexFile = new File(path.resolve(workingPath,ROOTINDEXPATH));
+    var extraction = StrUtil.extractBlock(indexFile.data,TEMPLATECOMPSTART,TEMPLATECOMPEND);
+    var components = extraction.block.split('\n');
+    components = components.filter(function(line){
+      return line && line !== '' && line !== '  ' && line !== '\n';
+    });
+    components.push("  @@include('app/components/"+compName+"/"+compName+".html')\n");
+    indexFile.data = extraction.preBlock + 
+                     TEMPLATECOMPSTART +
+                     components.join('\n') + '  ' +
+                     TEMPLATECOMPEND + 
+                     extraction.postBlock;
+    indexFile.saveData();
+  },
   addDependencies: function(workingPath, compName){
     this.addComponentToStyles(workingPath, compName);
+    this.addComponentToScripts(workingPath, compName);
+    this.addComponentToTemplates(workingPath, compName);
   },
   createComp: function(workingPath, compName){
     var con = this;

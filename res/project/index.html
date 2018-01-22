@@ -33,8 +33,10 @@
       </div>
     </div>
 
+  <!-- components:template:start -->
   @@include('app/components/loadingView/loadingView.html')
   @@include('app/components/loadingBar/loaderBar.html')
+  <!-- components:template:end -->
 
   <!-- build:jslib libs.js -->
   <script src="../node_modules/es6-promise/dist/es6-promise.js" type="text/javascript"></script>
@@ -50,8 +52,12 @@
   <script src="app/base/js/utils/browser.js" type="text/javascript"></script>
   <script src="app/models/deferred.js" type="text/javascript"></script>
   <script src="app/models/validation.js" type="text/javascript"></script>
-  <script src="app/components/loadingView.js" type="text/javascript"></script>
-  <script src="app/components/loaderBar.js" type="text/javascript"></script>
+
+  <!-- components:script:start -->
+  <script src="app/components/loadingView/loadingView.js" type="text/javascript"></script>
+  <script src="app/components/loaderBar/loaderBar.js" type="text/javascript"></script>
+  <!-- components:script:end -->
+
   <script src="app/base/js/main.js" type="text/javascript"></script>
   <script src="app/base/js/pluginEnd.js" type="text/javascript"></script>
   <!-- endBuild -->
