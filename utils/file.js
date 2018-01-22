@@ -16,7 +16,12 @@ var FileUtil = {
     });
 
     return def.promise;
-  }
+  },
+  resolveComponentName: function(str){
+    return str.replaceAll(' ','-')
+              .replaceAll('.','')
+              .replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  },
 };
 
 

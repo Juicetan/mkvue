@@ -1,6 +1,7 @@
 var fs = require('fs');
 var fse = require('fs-extra');
 var Deferred = require('../models/deferred');
+
 var fsUtil = require('../utils/file');
 
 var InitializationController = {
