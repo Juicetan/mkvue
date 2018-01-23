@@ -84,9 +84,9 @@ gulp.task('gatherDevMaterials', function(){
       .pipe(flatten())
       .pipe(gulp.dest('./.tmp/app/base/css')),
     gulp.src('./app/**/*.scss')
-      .pipe(flatten())
       .pipe(sass())
       .pipe(prefix("last 2 versions"))
+      .pipe(flatten())
       .pipe(gulp.dest('./.tmp/app/base/css'))
   );
 });
