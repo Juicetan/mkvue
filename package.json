@@ -1,6 +1,6 @@
 {
   "name": "mkvue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A NodeJS command line utility to assist in the creation of VueJS application.",
   "main": "index.js",
   "bin": {
