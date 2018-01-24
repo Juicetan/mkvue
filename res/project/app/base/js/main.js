@@ -1,4 +1,4 @@
-var newApp = (function(){
+var App = (function(){
   var deferredReady = new Deferred();
 
   var App = {
@@ -60,4 +60,63 @@ var newApp = (function(){
     }]
   });
 
+  App.vm = new Vue({
+    router: router,
+    el: '.container',
+    data: function(){
+      return {
+        isLoaded: false,
+        isLoading: false,
+        isCFGLoaded: false,
+        errorText: '',
+        sessionUser: null
+      };
+    },
+    computed: {
+    },
+    watch: {
+    },
+    methods: {
+      refreshApp: function(){
+        window.location.reload();
+      }
+    },
+    mounted: function(){
+      this.isLoaded = true;
+    },
+  });
+  
+  /**
+   * Resusing the Vue event emitter interface but keeping it generic so we can
+   * swap it out for our favourite event emitter if we ever need to.
+   */
+  App.vm.on = App.vm.$on;
+  App.vm.emit = App.vm.$emit;
+  App.evt = App.vm;
+
+  var loaderStack = [];
+  var loadStart = 0;
+  App.evt.on(App.actions.LOADING,function(bool, noDelay){
+    if(bool){
+      App.vm.isLoading = true;
+      if(loaderStack.length <= 0){
+        loadStart = new Date().getTime();
+      }
+      loaderStack.push(true);
+    } else if(!bool && loaderStack.length > 1){
+      loaderStack.pop();
+    } else if(!bool){
+      loaderStack.pop();
+      var now = new Date().getTime();
+      if(now - loadStart < 300 && !noDelay){
+        setTimeout(function(){
+          App.vm.isLoading = false;
+        },300);
+      } else{
+        App.vm.isLoading = false;
+      }
+    }
+  });
+
+  return App;
 })();

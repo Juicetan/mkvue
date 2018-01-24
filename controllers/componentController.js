@@ -103,7 +103,7 @@ var ComponentController = {
   },
   addComponentToTemplates: function(workingPath, compName){
     var indexFile = new File(path.resolve(workingPath,ROOTINDEXPATH));
-    var importStr = "  @@include('app/components/"+compName+"/"+compName+".html')";
+    var importStr = "  @@include('./templates/components/"+compName+"/"+compName+".html')";
     this.addComponentToDependency(indexFile, importStr, TEMPLATECOMPSTART, TEMPLATECOMPEND);
   },
   removeComponentFromTemplates: function(workingPath, compName){
