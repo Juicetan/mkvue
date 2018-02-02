@@ -3,16 +3,17 @@ var fs = require('fs');
 var fse = require('fs-extra');
 var path = require('path');
 
+var Cfg = require('../config/cfg');
 var StrUtil = require('../utils/string');
 var FileUtil = require('../utils/file');
+var CompCon = require('./componentController');
 
 var TEMPLATEPATH = path.resolve(__dirname,'../res/route');
-var ROUTEPATH = './app/routes';
 
 var RouteController = {
   createFiles: function(projectPath, compName){    
     var def = new Deferred();
-    var newCompPath = path.resolve(projectPath,ROUTEPATH+"/"+compName);
+    var newCompPath = path.resolve(projectPath,Cfg.path.ROUTE+"/"+compName);
 
     fse.copy(TEMPLATEPATH, newCompPath).then(function(){
       fs.renameSync(path.resolve(newCompPath,'./_route.scss'),path.resolve(newCompPath,'./_'+compName+'.scss'));
@@ -28,9 +29,12 @@ var RouteController = {
 
   },
   createRoute: function(path, compName){
+    var con = this;
     compName = FileUtil.resolveComponentName(compName);
+    var newCompPath = path.resolve(path,Cfg.path.ROUTE+"/"+compName);
+
     this.createFiles(path,compName).then(function(){
-      console.log('> route files created')
+      return CompCon.replaceNames(newCompPath, compName)
     });
   }
 };
