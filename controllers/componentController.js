@@ -24,18 +24,24 @@ var ComponentController = {
 
     return def.promise;
   },
-  replaceNames: function(compPath, compName){
+  replaceNames: function(compPath, defaultLabel,compName){
     var def = new Deferred();
 
     var className = StrUtil.camelize(compName.replaceAll('-',' '));
     className = className.charAt(0).toUpperCase()+className.substring(1);
+    var generalRegex = new RegExp(defaultLabel,'gi');
+    var jsTemplateRegex = new RegExp('#'+defaultLabel,'gi');
+    var registrationRegex = new RegExp("'"+defaultLabel+"'",'g');
+    var classRegex = new RegExp(defaultLabel.charAt(0).toUpperCase()+defaultLabel.slice(1),'g');
 
     Promise.settle([
-      FileUtil.replace(path.resolve(compPath,'./_'+compName+'.scss'),/component/g,compName),
-      FileUtil.replace(path.resolve(compPath,'./'+compName+'.html'),/component/g,compName),
-      FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),/component/g,compName)
+      FileUtil.replace(path.resolve(compPath,'./_'+compName+'.scss'),generalRegex,compName),
+      FileUtil.replace(path.resolve(compPath,'./'+compName+'.html'),generalRegex,compName),
+      FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),jsTemplateRegex,'#'+compName)
     ]).then(function(){
-      return FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),/Component/g,className);
+      return FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),registrationRegex,"'"+compName+"'");
+    }).then(function(){
+      return FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),classRegex,className);
     }).then(function(){
       def.resolve();
     });
@@ -117,13 +123,11 @@ var ComponentController = {
     compName = FileUtil.resolveComponentName(compName);
     var newCompPath = path.resolve(workingPath,Cfg.path.COMPONENT+"/"+compName);
 
-      return con.replaceNames(newCompPath,compName);
     this.createFiles(TEMPLATEPATH, newCompPath, 'component', compName).then(function(){
+      return con.replaceNames(newCompPath, 'component', compName);
     }).then(function(){
       console.log('> component files created');
       return con.addDependencies(workingPath,compName);
-    }).then(function(){
-
     }).catch(function(e){
       console.log('> oh no',e);
     });
