@@ -11,13 +11,13 @@ var File = require('../models/file');
 var TEMPLATEPATH = path.resolve(__dirname,'../res/component');
 
 var ComponentController = {
-  createFiles: function(newCompPath, compName){
+  createFiles: function(templatePath, newCompPath, compLabel, compName){
     var def = new Deferred();
 
-    fse.copy(TEMPLATEPATH, newCompPath).then(function(){
-      fs.renameSync(path.resolve(newCompPath,'./_component.scss'),path.resolve(newCompPath,'./_'+compName+'.scss'));
-      fs.renameSync(path.resolve(newCompPath,'./component.html'),path.resolve(newCompPath,'./'+compName+'.html'));
-      fs.renameSync(path.resolve(newCompPath,'./component.js'),path.resolve(newCompPath,'./'+compName+'.js'));
+    fse.copy(templatePath, newCompPath).then(function(){
+      fs.renameSync(path.resolve(newCompPath,'./_'+compLabel+'.scss'),path.resolve(newCompPath,'./_'+compName+'.scss'));
+      fs.renameSync(path.resolve(newCompPath,'./'+compLabel+'.html'),path.resolve(newCompPath,'./'+compName+'.html'));
+      fs.renameSync(path.resolve(newCompPath,'./'+compLabel+'.js'),path.resolve(newCompPath,'./'+compName+'.js'));
 
       def.resolve();
     });
@@ -117,8 +117,8 @@ var ComponentController = {
     compName = FileUtil.resolveComponentName(compName);
     var newCompPath = path.resolve(workingPath,Cfg.path.COMPONENT+"/"+compName);
 
-    this.createFiles(newCompPath,compName).then(function(){
       return con.replaceNames(newCompPath,compName);
+    this.createFiles(TEMPLATEPATH, newCompPath, 'component', compName).then(function(){
     }).then(function(){
       console.log('> component files created');
       return con.addDependencies(workingPath,compName);
