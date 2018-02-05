@@ -133,6 +133,7 @@ var ComponentController = {
     });
   },
   removeComp: function(workingPath, compName){
+    compName = FileUtil.resolveComponentName(compName);
     var folderPath = path.resolve(Cfg.path.COMPONENT,'./'+compName);
     fse.emptyDirSync(folderPath);
     fs.rmdirSync(folderPath);
