@@ -29,9 +29,14 @@ cmd.command('component <componentName>')
   });
 
 cmd.command('route <routeName>')
-  .action(function(routeName){
+  .option('-r, --remove', 'Remove route')
+  .action(function(routeName, opts){
     var path = process.cwd();
-    RouteCon.createRoute(path,routeName);
+    if(opts.remove){
+      RouteCon.removeRoute(path,routeName);
+    } else{
+      RouteCon.createRoute(path,routeName);
+    }
   });
 
 cmd.command('model <modelName>')
