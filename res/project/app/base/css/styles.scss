@@ -5,7 +5,9 @@
 @import '../../components/loadingView/loadingView';
 @import '../../components/loadingBar/loaderBar';
 /** components:end **/
+/** routes:start **/
 @import '../../routes/splash-page/_splash-page.scss';
+/** routes:end **/
 
 html,body{
   position: relative;
