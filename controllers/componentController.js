@@ -128,6 +128,8 @@ var ComponentController = {
     }).then(function(){
       console.log('> component files created');
       return con.addDependencies(workingPath,compName);
+    }).then(function(){
+      console.log('> added component dependency');
     }).catch(function(e){
       console.log('> oh no',e);
     });
@@ -139,6 +141,7 @@ var ComponentController = {
     fs.rmdirSync(folderPath);
 
     this.removeDependencies(workingPath, compName);
+    console.log('> removed component dependency');
   }
 };
 
