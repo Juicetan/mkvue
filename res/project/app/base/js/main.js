@@ -27,7 +27,7 @@ var App = (function(){
         }
         return resp.json();
       }).then(function(json){
-        app.cfg = ObjUtil.extend(app.cfg,json.defaults);
+        app.cfg = App.util.Obj.extend(app.cfg,json.defaults);
         app.vm.isDebug = app.cfg.debug;
         def.resolve(app.cfg);
       }).catch(function(ex){
