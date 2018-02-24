@@ -177,11 +177,9 @@ gulp.task('buildCacheDep',function(){
 gulp.task('watchChanges',function(){
   startLiveReloadServer();
 
+  gulp.watch(paths.app,changeDetected);
   gulp.watch(paths.dom,changeDetected);
-  gulp.watch(paths.templates,changeDetected);
-  gulp.watch(paths.scripts,changeDetected);
   gulp.watch(paths.resources,changeDetected);
-  gulp.watch(paths.styles,changeDetected);
 });
 
 gulp.task('getVersion',function(){
