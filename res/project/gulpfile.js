@@ -186,7 +186,7 @@ gulp.task('getVersion',function(){
   return git.branch(function(branchStr){
     git.short(function(hash){
       fs.writeFile('./dist/version.txt',
-        "tdgo:"+branchStr+":"+hash);
+        "app:"+branchStr+":"+hash);
     });
   });
 });
