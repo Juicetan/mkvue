@@ -40,9 +40,14 @@ cmd.command('route <routeName>')
   });
 
 cmd.command('model <modelName>')
-  .action(function(modelName){
+  .option('-r, --remove', 'Remove model')
+  .action(function(modelName, opts){
     var path = process.cwd();
-    ModelCon.createModel(path,modelName);
+    if(opts.remove){
+      ModelCon.removeModel(path, modelName);
+    } else{
+      ModelCon.createModel(path,modelName);
+    }
   });
   
 cmd.parse(process.argv);
