@@ -83,6 +83,7 @@ var App = (function(){
     },
     mounted: function(){
       this.isLoaded = true;
+      window.App = App;
     },
   });
   
