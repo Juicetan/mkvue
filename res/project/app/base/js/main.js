@@ -122,3 +122,14 @@ var App = (function(){
 
   return App;
 })();
+
+/*************************************************/
+
+App.router.replace('/');
+App.checkVersion();
+
+App.initConfig().then(function(){
+  //@todo
+}).catch(function(e){
+  console.log('> initialiaation failed', e);
+});;
