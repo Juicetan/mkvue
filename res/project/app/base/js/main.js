@@ -92,6 +92,7 @@ var App = (function(){
    * swap it out for our favourite event emitter if we ever need to.
    */
   App.vm.on = App.vm.$on;
+  App.vm.off = App.vm.$off;
   App.vm.emit = App.vm.$emit;
   App.evt = App.vm;
 
