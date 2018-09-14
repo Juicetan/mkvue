@@ -7,7 +7,7 @@ var RouteCon = require('./controllers/routeController');
 var ModelCon = require('./controllers/modelController');
 
 cmd
-  .version('0.3.2')
+  .version('0.3.3')
   .description('A NodeJS command line utility to assist in creating componentized VueJS applications.');
 
 cmd.command('project [path]')
