@@ -22,6 +22,10 @@ body{
   padding-right: 0;
 }
 
+input{
+  box-sizing: border-box;
+}
+
 .container{
   position: relative;
   height: 100%;

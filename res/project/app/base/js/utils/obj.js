@@ -16,7 +16,8 @@ App.util.Obj = (function(){
       }
       return 'js' + s4() + s4() + '-' + s4() + '-' + s4() + '-' +
            s4() + '-' + s4() + s4() + s4();
-    },zero2Pad: function(num){
+    },
+    zero2Pad: function(num){
       return ('0'+num).slice(-2);
     },
     removeObject:function(arr,obj,findCallback){
@@ -53,7 +54,27 @@ App.util.Obj = (function(){
         }
       }
       return union;
-    }
+    },
+    hash: function(str) {
+      var hash = 0, i, chr;
+      if (str.length === 0) return hash;
+      for (i = 0; i < str.length; i++) {
+        chr   = str.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+      }
+      return 'f'+hash;
+    },
+    replaceAllStr: function(str, search, replacement){
+      return str.split(search).join(replacement);
+    },
+    getContrastYIQ: function(hexcolor){
+      var r = parseInt(hexcolor.substr(0,2),16);
+      var g = parseInt(hexcolor.substr(2,2),16);
+      var b = parseInt(hexcolor.substr(4,2),16);
+      var yiq = ((r*299)+(g*587)+(b*114))/1000;
+      return (yiq >= 128) ? 'black' : 'white';
+    },
   };
 
   Obj.extend = (function(){
