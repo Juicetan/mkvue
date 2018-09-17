@@ -16,7 +16,7 @@
 }
 
 @mixin movable{
-  @inlcude noSelect;
+  @include noSelect;
   cursor: move;
 }
 
