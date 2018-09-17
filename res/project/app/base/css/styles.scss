@@ -26,6 +26,25 @@ input{
   box-sizing: border-box;
 }
 
+.fade-enter-active, .fade-leave-active {
+  transition-property: opacity;
+  transition-duration: .25s;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.2s linear;
+}
+.slide-enter {
+  transform: translate(100%, 0);
+}
+.slide-leave-active {
+  transform: translate(100%, 0);
+}
+
 .container{
   position: relative;
   height: 100%;
