@@ -11,7 +11,8 @@ var App = (function(){
     },
     actions:{
       LOADING: "loading",
-      CONFIG_UPDATE: "configupdated"
+      CONFIG_UPDATE: "configupdated",
+      VIBRATE: 'vibrate'
     },
     cfg: {},
     util: {},
@@ -46,9 +47,33 @@ var App = (function(){
       fetch(this.ext.VERSION).then(function(resp){
         return resp.text();
       }).then(function(fileStr){
+        App.vm.version = fileStr;
         console.debug(fileStr);
       });
     },
+    toast: function(msg, msgType){
+      msgType = msgType || 'normal';
+
+      if(typeof msg === 'object'){
+        try{
+          msg = JSON.stringify(msg);
+        } catch(e){
+          console.log('> toast stringify fail', e);
+        }
+      }
+
+      var opt = {
+        text: msg,
+        gravity: 'bottom',
+        duration: 3000
+      };
+      if(msgType === 'error'){
+        opt.backgroundColor = '#b20000';
+        opt.duration = 7000;
+      }
+
+      Toastify(opt).showToast();
+    }
   };
 
   var router = App.router = new VueRouter({
@@ -68,8 +93,8 @@ var App = (function(){
         isLoaded: false,
         isLoading: false,
         isCFGLoaded: false,
-        errorText: '',
-        sessionUser: null
+        isDebug: false,
+        errorText: ''
       };
     },
     computed: {
@@ -117,6 +142,13 @@ var App = (function(){
       } else{
         App.vm.isLoading = false;
       }
+    }
+  });
+
+  App.evt.on(App.actions.VIBRATE, function(opt){
+    if('vibrate' in navigator){
+      var input = opt? opt.pattern || opt.duration || [200,50,200] : [200,50,200];
+      navigator.vibrate(input);
     }
   });
 

@@ -19,7 +19,7 @@ App.util.Api = (function(){
         .then(function(respObj){
           if(isJSON){
             try{
-              respObj.body = api.parseResponse(respObj.body);
+              respObj.body = Api.parseResponse(respObj.body);
               def.resolve(respObj);
             } catch(e){
               def.reject(new Validation().addError("Request Failed","Unexpected server response.",{
@@ -30,8 +30,8 @@ App.util.Api = (function(){
             def.resolve(respObj);
           }
         }).catch(function(resp){
-          api.getResultBody(resp).then(function(resultObj){
-            var parsedResp = api.parseErrorMsg(resultObj.body);
+          Api.getResultBody(resp).then(function(resultObj){
+            var parsedResp = Api.parseErrorMsg(resultObj.body);
             def.reject(new Validation().addError('Request error',parsedResp,{
               serverCode: resp.status
             }));
@@ -118,6 +118,10 @@ App.util.Api = (function(){
       }
 
       return msg;
+    },
+    parseYoutubeID: function(url){
+      url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+      return undefined !== url[2]?url[2].split(/[^0-9a-z_\-]/i)[0]:url[0];
     }
   };
 

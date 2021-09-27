@@ -1,4 +1,6 @@
-var Component = Vue.extend({
-  template:'#component',
-});
+var Component = (function(){
+  return Vue.extend({
+    template:'#component',
+  });
+})();
 Vue.component('component',Component);

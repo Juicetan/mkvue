@@ -15,7 +15,10 @@ var InitializationController = {
   setupProject: function(path){
     var def = new Deferred();
     var con = this;
-    var folderName = path.substring(path.lastIndexOf("/")+1) || 'Vue Project';
+    var folderName = path.substring(path.lastIndexOf("/")+1);
+    if(folderName === '.'){
+      folderName = 'VueProject-'+Math.round(Date.now()/1000);
+    }
 
     fse.ensureDirSync(path);
     fse.copy(__dirname+'/../res/project',path).then(function(){

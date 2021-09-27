@@ -1,9 +1,13 @@
 @import 'mixins';
 @import 'variables';
+@import 'overrides';
 
 /** components:start **/
-@import '../../components/loadingView/loadingView';
-@import '../../components/loadingBar/loaderBar';
+@import '../../components/loadingView/_loadingView.scss';
+@import '../../components/loadingBar/_loaderBar.scss';
+@import '../../components/copy-input/_copy-input.scss';
+@import '../../components/toggle-view/_toggle-view.scss';
+@import '../../components/infinite-scroll/_infinite-scroll.scss';
 /** components:end **/
 /** routes:start **/
 @import '../../routes/splash-page/_splash-page.scss';
@@ -50,6 +54,7 @@ input{
   height: 100%;
   transition: opacity 0.3s linear;
   opacity: 0;
+  color: $color-fontgray;
   &.loaded{
     opacity: 1;
   }
@@ -57,6 +62,9 @@ input{
     .loading-view{
       display: block;
     }
+  }
+  input,textarea{
+    box-sizing: border-box;
   }
   .loading-view{
     display: none;
@@ -98,6 +106,31 @@ input{
   &.has-update{
     .update-prompt{
       transform: translateY(0);
+    }
+  }
+
+  .shadow-wrap{
+    position: absolute;
+    border-radius: 100%;
+    box-shadow: 0px 5px 20px -7px black;
+    &:hover{
+      box-shadow: 0px 5px 27px -7px black;
+    }
+    .action-btn{
+      @include clickable;
+      background-color: $color-blue;
+      color: white;
+      line-height: 60px;
+      height: 60px;
+      width: 60px;
+      border-radius: 100%;
+      text-align: center;
+      font-size: 35px;
+      transform: rotate(0);
+      transition: transform 0.13s linear;
+      &:hover{
+        transform: rotate(180deg);
+      }
     }
   }
 }

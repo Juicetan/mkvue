@@ -50,6 +50,40 @@
   }
 }
 
+@mixin passiveScrollBar(){
+  &::-webkit-scrollbar{
+    display: none;
+  }
+  &:hover{
+    &::-webkit-scrollbar{
+      display: block;
+    }
+  }
+}
+
+@mixin unobtrusiveScroll($width:7px,$height:7px){
+  overflow: overlay;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar{
+    height: $height;
+    width: $width;
+  }
+  &::-webkit-scrollbar-track{
+    border-radius: 10px;
+    background-color: rgba(black, 0);
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background-color: rgba(black, 0);
+    transition: background-color 0.1s linear;
+  }
+  &:hover{
+    &::-webkit-scrollbar-thumb{
+      background-color: rgba(black, 0.5);
+    }
+  }
+}
+
 @mixin lineClamp($numLines,$lineSize:20px){
   position: relative;
   max-height: ($numLines * $lineSize);
