@@ -134,7 +134,7 @@ gulp.task('gatherDevMaterials', gulp.parallel(
   moveActions.appImages,
   moveActions.styles,
   moveActions.computedStyles,
-  moveActions.vendor
+  moveActions.devConfig
 ));
 
 gulp.task('gatherMaterials', gulp.parallel(
@@ -142,7 +142,7 @@ gulp.task('gatherMaterials', gulp.parallel(
   moveActions.appImages,
   moveActions.styles,
   moveActions.computedStyles,
-  moveActions.vendor
+  moveActions.config
 ));
 
 gulp.task('useminifyProd', function(){
