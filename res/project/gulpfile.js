@@ -43,7 +43,7 @@ var startLiveReloadServer = function(){
 var changeDetected = function(file){
   console.log('> change detected',file);
 
-  gulp.series('dev',function(){
+  gulp.series('dev')(function(){
     browserSync.reload();
   });
 };
