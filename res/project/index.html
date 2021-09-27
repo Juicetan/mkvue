@@ -32,6 +32,9 @@
   <!-- components:template:start -->
   @@include('./templates/components/loadingView/loadingView.html')
   @@include('./templates/components/loadingBar/loaderBar.html')
+  @@include('./templates/components/copy-input/copy-input.html')
+  @@include('./templates/components/toggle-view/toggle-view.html')
+  @@include('./templates/components/infinite-scroll/infinite-scroll.html')
   <!-- components:template:end -->
   <!-- routes:template:start -->
   @@include('./templates/routes/splash-page/splash-page.html')
@@ -42,7 +45,9 @@
   <script src="../node_modules/whatwg-fetch/fetch.js" type="text/javascript"></script>
   <script src="../node_modules/vue/dist/vue.js" type="text/javascript"></script>
   <script src="../node_modules/vue-router/dist/vue-router.js" type="text/javascript"></script>
+  <script src="../node_modules/clipboard/dist/clipboard.js" type="text/javascript"></script>
   <script src="../node_modules/localforage/dist/localforage.js" type="text/javascript"></script>
+  <script src="../node_modules/toastify-js/src/toastify.js" type="text/javascript"></script>
   <!-- endBuild -->
   <!-- build:jsapp app.js -->
 
@@ -55,6 +60,9 @@
   <!-- components:script:start -->
   <script src="app/components/loadingView/loadingView.js" type="text/javascript"></script>
   <script src="app/components/loadingBar/loaderBar.js" type="text/javascript"></script>
+  <script src='app/components/copy-input/copy-input.js' type='text/javascript'></script>
+  <script src='app/components/toggle-view/toggle-view.js' type='text/javascript'></script>
+  <script src='app/components/infinite-scroll/infinite-scroll.js' type='text/javascript'></script>
   <!-- components:script:end -->
   <!-- routes:script:start -->
   <script src="app/routes/splash-page/splash-page.js" type="text/javascript"></script>
