@@ -3,3 +3,4 @@ node_modules/*
 .tmp
 docs
 testResults
+package-lock.json
