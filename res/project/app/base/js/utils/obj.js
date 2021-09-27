@@ -35,6 +35,20 @@ App.util.Obj = (function(){
       }
       return arr;
     },
+    debounce: function(func, wait, immediate) {
+      var timeout;
+      return function() {
+        var context = this, args = arguments;
+        var later = function() {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+      };
+    },
     difference: function(currentSource, sourceOfTruth){
       var diff = [];
 
@@ -68,6 +82,18 @@ App.util.Obj = (function(){
     replaceAllStr: function(str, search, replacement){
       return str.split(search).join(replacement);
     },
+    stringToColour: function(str) {
+      var hash = 0;
+      for (var i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      var colour = '#';
+      for (var i = 0; i < 3; i++) {
+        var value = (hash >> (i * 8)) & 0xFF;
+        colour += ('00' + value.toString(16)).substr(-2);
+      }
+      return colour;
+    },
     getContrastYIQ: function(hexcolor){
       var r = parseInt(hexcolor.substr(0,2),16);
       var g = parseInt(hexcolor.substr(2,2),16);
@@ -75,6 +101,62 @@ App.util.Obj = (function(){
       var yiq = ((r*299)+(g*587)+(b*114))/1000;
       return (yiq >= 128) ? 'black' : 'white';
     },
+    hexToRGB: function(hexStr){
+      if(hexStr[0] == "#"){
+        hexStr = hexStr.slice(1);
+      }
+      var num = parseInt(hexStr,16);
+      var r = (num >> 16);
+      var g = (num & 0x0000FF);
+      var b = ((num >> 8) & 0x00FF);
+
+      return {
+        r: r,
+        g: g,
+        b: b
+      };
+    },
+    lightenDarkenColor: function(col, amt) {
+      var usePound = false;
+      if(col[0] == "#"){
+        col = col.slice(1);
+        usePound = true;
+      }
+      
+      var num = parseInt(col,16);
+  
+      var r = (num >> 16) + amt;
+      if(r > 255){
+        r = 255;
+      } else if(r < 0){
+        r = 0;
+      }
+  
+      var b = ((num >> 8) & 0x00FF) + amt;
+      if(b > 255){
+        b = 255;
+      } else if(b < 0){
+        b = 0;
+      }
+  
+      var g = (num & 0x0000FF) + amt;
+      if(g > 255){
+        g = 255;
+      } else if(g < 0){
+        g = 0;
+      }
+  
+      return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+    },
+    darken: function(hexStr, percent){
+      return this.lightenDarkenColor(hexStr, -percent);
+    },
+    lighten: function(hexStr, percent){
+      return this.lightenDarkenColor(hexStr, percent);
+    },
+    randomInt:function(min,max){
+      return Math.floor(Math.random()*(max-min+1)+min);
+    }
   };
 
   Obj.extend = (function(){

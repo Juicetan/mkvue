@@ -69,6 +69,24 @@ App.util.Browser = (function(){
       };
 
       return def.promise;
+    },
+    saveAs: function(str, filename){
+      str = encodeURIComponent(str);
+
+      var $link = document.createElement('a');
+      $link.style.position = 'absolute';
+      $link.style.width = '1px';
+      $link.style.height = '1px';
+      $link.style.opacity = '0';
+      
+      var $body = document.querySelector('body');
+      
+      $link.setAttribute('download', filename);
+      $link.setAttribute('href', 'data:application/octet-stream,'+ str);
+
+      $body.appendChild($link);
+
+      $link.click();
     }
   };
 })();
