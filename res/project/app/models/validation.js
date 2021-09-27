@@ -30,6 +30,12 @@ var Validation = (function(){
       }
       return null;
     },
+    merge: function(validation){
+      Array.prototype.push.apply(this.errors,validation.errors);
+      this.state = this.errors.length < 1;
+
+      return this;
+    },
     setStackTrace: function(){
       var flyError = new Error();
       flyError.name = "FlybitsError";
@@ -40,6 +46,13 @@ var Validation = (function(){
         }).join('\n');
       }
       return this;
+    },
+    toJSON: function(){
+      return {
+        state: this.state,
+        errors: this.errors,
+        stacktrace: this.stacktrace
+      };
     }
   };
 
