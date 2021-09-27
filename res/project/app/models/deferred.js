@@ -1,21 +1,4 @@
 var Deferred = (function(){
-  Promise.settle = function(promisesArr){
-    var reflectedArr = promisesArr.map(function(promise){
-      return promise.then(function(successResult){
-        return {
-          result: successResult,
-          status: 'resolved'
-        };
-      },function(errorResult){
-        return {
-          result: errorResult,
-          status: 'rejected'
-        };
-      });
-    });
-    return Promise.all(reflectedArr);
-  };
-  
   function Deferred(){
     var def = this;
     /**
@@ -41,6 +24,23 @@ var Deferred = (function(){
     this.then = this.promise.then.bind(this.promise);
     this.catch = this.promise.catch.bind(this.promise);
   }
+
+  Deferred.settlePromises = Deferred.prototype.settlePromises = function(promisesArr){
+    var reflectedArr = promisesArr.map(function(promise){
+      return promise.then(function(successResult){
+        return {
+          result: successResult,
+          status: 'resolved'
+        };
+      },function(errorResult){
+        return {
+          result: errorResult,
+          status: 'rejected'
+        };
+      });
+    });
+    return Promise.all(reflectedArr);  
+  };
 
   return Deferred;
 })();
