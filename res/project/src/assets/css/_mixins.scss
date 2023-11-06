@@ -1,0 +1,67 @@
+@mixin noSelect{
+  touch-callout: none;
+  user-select:none;
+  cursor: default;
+}
+
+@mixin clickable{
+  @include noSelect;
+  cursor: pointer;
+}
+
+@mixin movable{
+  @include noSelect;
+  cursor: move;
+}
+
+@mixin card{
+  background-color: white;
+  border: 1px solid #e5e5e5;
+  border-bottom: none;
+  box-shadow: 0 2px 2px rgba(black,0.24);
+  &:hover{
+    box-shadow: 0 2px 5px rgba(black,0.24);
+  }
+}
+
+@mixin miniscroll($width:5px,$height:5px){
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+  }
+  &::-webkit-scrollbar{
+    height: $height;
+    width: $width;
+    background-color: #F5F5F5;
+  }
+  &::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: rgb(85,85,85);
+    background-color: rgba(85,85,85,0.25);
+  }
+}
+
+@mixin lineClamp($numLines,$lineSize:20px){
+  position: relative;
+  max-height: ($numLines * $lineSize);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: $numLines;
+  -webkit-box-orient: vertical;
+  &:after{
+    display: none;
+  }
+}
+
+@mixin clearfix{
+  &:after{
+    content: "";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+  }
+}
