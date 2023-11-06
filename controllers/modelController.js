@@ -6,8 +6,6 @@ var path = require('path');
 var Cfg = require('../config/cfg');
 var StrUtil = require('../utils/string');
 var FileUtil = require('../utils/file');
-var File = require('../models/file');
-var CompCon = require('./componentController');
 
 var TEMPLATEPATH = path.resolve(__dirname,'../res/model');
 
