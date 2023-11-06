@@ -19,6 +19,11 @@ var StrUtil = {
       (g0, g1, g2) => g1.toUpperCase() + g2.toLowerCase()
     ).replace(/[^a-z\d]/gi, '');
   },
+  dasherize: function(str){
+    str = str.charAt(0).toLowerCase()+str.slice(1);
+    return str.replace(/[\s_]+/g, '-')
+              .replace(/[A-Z]/g, m => "-" + m.toLowerCase());
+  },
   extractBlock: function(str, blockStart, blockEnd){
     var startSplit = str.split(blockStart);
     var endSplit = startSplit[1].split(blockEnd);
