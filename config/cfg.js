@@ -1,11 +1,9 @@
 
 var CFG = {
   path: {
-    ROUTE: './app/routes',
-    COMPONENT: './app/components',
-    MODEL: './app/models',
-    ROOTINDEX: './index.html',
-    ROOTSTYLE: './app/base/css/styles.scss'
+    ROUTE: './src/views',
+    COMPONENT: './src/components',
+    MODEL: './src/models',
   },
   style: {
     COMPSTART: '/** components:start **/',

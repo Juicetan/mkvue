@@ -23,15 +23,6 @@ var ModelController = {
 
     return def.promise;
   },
-  addDependencies: function(workingPath, modelName){
-    var indexFile = new File(path.resolve(workingPath, Cfg.path.ROOTINDEX));
-    var importStr = "  <script src='app/models/"+modelName+".js' type='text/javascript'></script>";
-    CompCon.addComponentToDependency(indexFile, importStr, Cfg.script.MODELSTART, Cfg.script.MODELEND);
-  },
-  removeDependencies: function(workingPath, modelName){
-    var indexFile = new File(path.resolve(workingPath,Cfg.path.ROOTINDEX));
-    CompCon.removeComponentFromDependency(indexFile, modelName, Cfg.script.MODELSTART, Cfg.script.MODELEND);
-  },
   createModel: function(workingPath, modelName){
     var con = this;
     modelName = FileUtil.resolveComponentName(modelName);
@@ -41,9 +32,6 @@ var ModelController = {
       return CompCon.replaceNames(newModelPath, 'model', modelName);
     }).then(function(){
       console.log('> model file created');
-      return con.addDependencies(workingPath, modelName);
-    }).then(function(){
-      console.log('> added model dependency');
     }).catch(function(e){
       console.log('> oh no', e);
     });
@@ -53,9 +41,6 @@ var ModelController = {
     var filePath = path.resolve(Cfg.path.MODEL,'./'+modelName+".js");
     fs.unlinkSync(filePath)
     console.log('> removed model file');
-
-    this.removeDependencies(workingPath, modelName);
-    console.log('> removed model dependency');
   }
 };
 

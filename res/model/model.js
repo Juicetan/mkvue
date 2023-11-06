@@ -1,11 +1,9 @@
-var Model = (function(){
-  function Model(){
+function Model(){
 
-  };
+};
 
-  Model.prototype = {
+Model.prototype = {
 
-  };
+};
 
-  return Model;
-})();
+export default Model;
