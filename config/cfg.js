@@ -4,26 +4,13 @@ var CFG = {
     ROUTE: './src/views',
     COMPONENT: './src/components',
     MODEL: './src/models',
+    ROUTER: './src/router/index.js'
   },
-  style: {
-    COMPSTART: '/** components:start **/',
-    COMPEND: '/** components:end **/',
-    ROUTESTART: '/** routes:start **/',
-    ROUTEEND: '/** routes:end **/'
-  },
-  script: {
-    COMPSTART: '<!-- components:script:start -->',
-    COMPEND: '<!-- components:script:end -->',
-    ROUTESTART: '<!-- routes:script:start -->',
-    ROUTEEND: '<!-- routes:script:end -->',
-    MODELSTART: '<!-- models:script:start -->',
-    MODELEND: '<!-- models:script:end -->'
-  },
-  template: {
-    COMPSTART: '<!-- components:template:start -->',
-    COMPEND: '<!-- components:template:end -->',
-    ROUTESTART: '<!-- routes:template:start -->',
-    ROUTEEND: '<!-- routes:template:end -->',
+  delims: {
+    ROUTESIMPORTSTART: '/* <!-- routes import start --!> */',
+    ROUTESIMPORTEND: '/* <!-- routes import end --!> */',
+    ROUTESSTART: '/* <!-- routes start -- !> */',
+    ROUTESEND: '/* <!-- routes end -- !> */'
   }
 };
 
