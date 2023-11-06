@@ -23,13 +23,27 @@ var ModelController = {
 
     return def.promise;
   },
+  replaceNames: function(compPath, defaultLabel,compName){
+    var def = new Deferred();
+
+    var className = StrUtil.pascalize(compName);
+    var classRegex = new RegExp(StrUtil.pascalize(defaultLabel),'g');
+
+    FileUtil.replace(path.resolve(compPath,'./'+compName+'.js'),classRegex,className).then(function(){
+      def.resolve();
+    }).catch(function(e){
+      def.reject(e);
+    });
+
+    return def.promise;
+  },
   createModel: function(workingPath, modelName){
     var con = this;
     modelName = FileUtil.resolveComponentName(modelName);
     var newModelPath = path.resolve(workingPath, Cfg.path.MODEL);
 
     con.createFiles(TEMPLATEPATH, newModelPath , 'model',modelName).then(function(){
-      return CompCon.replaceNames(newModelPath, 'model', modelName);
+      return con.replaceNames(newModelPath, 'model', modelName);
     }).then(function(){
       console.log('> model file created');
     }).catch(function(e){
