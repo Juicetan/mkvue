@@ -3,16 +3,78 @@ var path = require('path');
 
 var Cfg = require('../config/cfg');
 var StrUtil = require('../utils/string');
+var File = require('../models/file');
 var CompCon = require('./componentController');
 
 var TEMPLATEPATH = path.resolve(__dirname,'../res/route');
 
 var RouteController = {
-  addToRouteIndex: function(compName){
+  addToRouteIndex: function(workingPath, compName){
+    var indexFile = new File(path.resolve(workingPath,Cfg.path.ROUTER));
     
-  },
-  removeFromRouteIndex: function(compName){
+    // imports
+    var importExtract = StrUtil.extractBlock(indexFile.data, Cfg.delims.ROUTESIMPORTSTART,Cfg.delims.ROUTESIMPORTEND);
+    var importStrs = importExtract.block.split('\n').filter(function(val){
+      return val && typeof val === 'string' && val.trim();
+    });
+    importStrs.push(`import ${compName} from '../views/${compName}.vue';`);
 
+    indexFile.data = importExtract.preBlock +
+                     Cfg.delims.ROUTESIMPORTSTART +
+                     importStrs.join('\n') + '\n' + 
+                     Cfg.delims.ROUTESIMPORTEND +
+                     importExtract.postBlock;
+
+    // router registration
+    var regExtract = StrUtil.extractBlock(indexFile.data, Cfg.delims.ROUTESSTART, Cfg.delims.ROUTESEND);
+    var regStrs = regExtract.block.split('\n').filter(function(val){
+      return val && typeof val === 'string' && val.trim();
+    });
+    regStrs.push(`    {
+      path: '/${StrUtil.camelize(compName)}',
+      name: '${StrUtil.camelize(compName)}',
+      component: ${compName},
+      meta: {
+        transition: 'fade'
+      }
+    },`);
+
+    indexFile.data = regExtract.preBlock +
+                     Cfg.delims.ROUTESSTART +
+                     regStrs.join('\n') + '\n' + 
+                     '    ' + Cfg.delims.ROUTESEND +
+                     regExtract.postBlock;
+    indexFile.saveData();
+  },
+  removeFromRouteIndex: function(workingPath, compName){
+    var indexFile = new File(path.resolve(workingPath,Cfg.path.ROUTER));
+
+    // imports
+    var importExtract = StrUtil.extractBlock(indexFile.data, Cfg.delims.ROUTESIMPORTSTART,Cfg.delims.ROUTESIMPORTEND);
+    var importStrs = importExtract.block.split('\n').filter(function(val){
+      return val && typeof val === 'string' && val.trim();
+    }).filter(function(val){
+      return !val.includes(compName);
+    });
+    indexFile.data = importExtract.preBlock +
+                     Cfg.delims.ROUTESIMPORTSTART +
+                     importStrs.join('\n') + (importStrs.length?'\n':'') + 
+                     Cfg.delims.ROUTESIMPORTEND +
+                     importExtract.postBlock;
+    
+    // router unregistration
+    var regExtract = StrUtil.extractBlock(indexFile.data, Cfg.delims.ROUTESSTART, Cfg.delims.ROUTESEND);
+    var regStrs = regExtract.block.split('},\n').filter(function(val){
+      return val && typeof val === 'string' && val.trim();
+    }).filter(function(val){
+      return !val.includes(compName);
+    });
+    indexFile.data = regExtract.preBlock +
+                     Cfg.delims.ROUTESSTART +
+                     regStrs.join('},\n') + (regStrs.length?'},\n':'') + 
+                     '    ' + Cfg.delims.ROUTESEND +
+                     regExtract.postBlock;
+    indexFile.saveData();
   },
   createRoute: function(workingPath, compName){
     var con = this;
@@ -23,6 +85,9 @@ var RouteController = {
       return CompCon.replaceNames(newCompPath, 'RouteView', compName);
     }).then(function(){
       console.log('> route files created');
+      return con.addToRouteIndex(workingPath, compName);
+    }).then(function(){
+      console.log('> route registered');
     }).catch(function(e){
       console.log('> oh no',e);
     });
@@ -32,6 +97,8 @@ var RouteController = {
     var filePath = path.resolve(Cfg.path.ROUTE,'./'+compName+'.vue');
     fs.unlinkSync(filePath)
     console.log('> removed route file');
+    this.removeFromRouteIndex(workingPath, compName);
+    console.log('> route unregistered');
   }
 };
 
