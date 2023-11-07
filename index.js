@@ -6,9 +6,11 @@ var CompCon = require('./controllers/componentController');
 var RouteCon = require('./controllers/routeController');
 var ModelCon = require('./controllers/modelController');
 
+var package = require('./package.json');
+
 cmd
-  .version('1.0.1')
-  .description('A NodeJS command line utility to assist in creating componentized VueJS applications.');
+  .version(package.version)
+  .description(package.description);
 
 cmd.command('project [path]')
   .description('Create boilerplate project.  If no path is provided current working directory will be used.')
