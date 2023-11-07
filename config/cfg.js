@@ -7,10 +7,10 @@ var CFG = {
     ROUTER: './src/router/index.js'
   },
   delims: {
-    ROUTESIMPORTSTART: '/* <!-- routes import start --!> */',
-    ROUTESIMPORTEND: '/* <!-- routes import end --!> */',
-    ROUTESSTART: '/* <!-- routes start -- !> */',
-    ROUTESEND: '/* <!-- routes end -- !> */'
+    ROUTESIMPORTSTART: '/* !!-- routes import start --!! */\n',
+    ROUTESIMPORTEND: '/* !!-- routes import end --!! */\n',
+    ROUTESSTART: '/* !!-- routes start --!! */\n',
+    ROUTESEND: '/* !!-- routes end --!! */\n'
   }
 };
 

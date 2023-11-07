@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import SplashView from '../views/SplashView.vue'
 import DashboardView from '../views/DashboardView.vue';
+/* !!-- routes import start --!! */
+/* !!-- routes import end --!! */
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -20,7 +22,10 @@ const router = createRouter({
       meta: {
         transition: 'fade'
       }
-    }
+    },
+    /* !!-- routes start --!! */
+    /* !!-- routes end --!! */
+    
     // {
     //   path: '/about',
     //   name: 'about',
