@@ -1,4 +1,3 @@
-var fs = require('fs');
 var fse = require('fs-extra');
 var Deferred = require('../models/deferred');
 
@@ -9,7 +8,8 @@ var InitializationController = {
     console.log('> setting project name',projectName);
     return Promise.settle([
       fsUtil.replace(path+'/index.html','<!-- title -->',projectName),
-      fsUtil.replace(path+'/package.json','<!-- title -->',projectName.toLowerCase().split(' ').join(''))
+      fsUtil.replace(path+'/package.json','<!-- title -->',projectName),
+      fsUtil.replace(path+'/public/manifest.json','<!-- title -->',projectName)
     ]);
   },
   setupProject: function(path){
@@ -19,6 +19,10 @@ var InitializationController = {
     if(folderName === '.'){
       folderName = 'VueProject-'+Math.round(Date.now()/1000);
     }
+
+    var cleansedFolderName = folderName.replaceAll(' ','-');
+    path = path.replace(folderName,cleansedFolderName);
+    folderName = cleansedFolderName;
 
     fse.ensureDirSync(path);
     fse.copy(__dirname+'/../res/project',path).then(function(){

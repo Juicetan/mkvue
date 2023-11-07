@@ -1,7 +1,0 @@
-.infinite-scroll{
-  @include miniscroll;
-  overflow-y: auto;
-  .inner-content-wrap{
-    @include clearfix;
-  }
-}
