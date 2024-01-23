@@ -6,11 +6,17 @@ var CFG = {
     MODEL: './src/models',
     ROUTER: './src/router/index.js'
   },
+  delimsRegex: {
+    ROUTESIMPORTSTART: /\/\* !!-- routes import start --!! \*\/\r?\n/,
+    ROUTESIMPORTEND: /\/\* !!-- routes import end --!! \*\/\r?\n/,
+    ROUTESSTART: /\/\* !!-- routes start --!! \*\/\r?\n/,
+    ROUTESEND: /\/\* !!-- routes end --!! \*\/\r?\n/
+  },
   delims: {
-    ROUTESIMPORTSTART: '/* !!-- routes import start --!! */\n',
-    ROUTESIMPORTEND: '/* !!-- routes import end --!! */\n',
-    ROUTESSTART: '/* !!-- routes start --!! */\n',
-    ROUTESEND: '/* !!-- routes end --!! */\n'
+    ROUTESIMPORTSTART: '/* !!-- routes import start --!! */',
+    ROUTESIMPORTEND: '/* !!-- routes import end --!! */',
+    ROUTESSTART: '/* !!-- routes start --!! */',
+    ROUTESEND: '/* !!-- routes end --!! */'
   }
 };
 
