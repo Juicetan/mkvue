@@ -6,28 +6,29 @@ var StrUtil = require('../utils/string');
 var File = require('../models/file');
 var CompCon = require('./componentController');
 
-var TEMPLATEPATH = path.resolve(__dirname,'../res/route');
+const TEMPLATEPATH = path.resolve(__dirname,'../res/route');
+const NEWLINEREGEX = /\r?\n/;
 
 var RouteController = {
   addToRouteIndex: function(workingPath, compName){
     var indexFile = new File(path.resolve(workingPath,Cfg.path.ROUTER));
     
     // imports
-    var importExtract = StrUtil.extractBlock(indexFile.data, Cfg.delims.ROUTESIMPORTSTART,Cfg.delims.ROUTESIMPORTEND);
-    var importStrs = importExtract.block.split('\n').filter(function(val){
+    var importExtract = StrUtil.extractBlock(indexFile.data, Cfg.delimsRegex.ROUTESIMPORTSTART,Cfg.delimsRegex.ROUTESIMPORTEND);
+    var importStrs = importExtract.block.split(NEWLINEREGEX).filter(function(val){
       return val && typeof val === 'string' && val.trim();
     });
     importStrs.push(`import ${compName} from '../views/${compName}.vue';`);
 
     indexFile.data = importExtract.preBlock +
-                     Cfg.delims.ROUTESIMPORTSTART +
+                     Cfg.delims.ROUTESIMPORTSTART + '\n' +
                      importStrs.join('\n') + '\n' + 
-                     Cfg.delims.ROUTESIMPORTEND +
+                     Cfg.delims.ROUTESIMPORTEND + '\n' +
                      importExtract.postBlock;
 
     // router registration
-    var regExtract = StrUtil.extractBlock(indexFile.data, Cfg.delims.ROUTESSTART, Cfg.delims.ROUTESEND);
-    var regStrs = regExtract.block.split('\n').filter(function(val){
+    var regExtract = StrUtil.extractBlock(indexFile.data, Cfg.delimsRegex.ROUTESSTART, Cfg.delimsRegex.ROUTESEND);
+    var regStrs = regExtract.block.split(NEWLINEREGEX).filter(function(val){
       return val && typeof val === 'string' && val.trim();
     });
     regStrs.push(`    {
@@ -40,9 +41,9 @@ var RouteController = {
     },`);
 
     indexFile.data = regExtract.preBlock +
-                     Cfg.delims.ROUTESSTART +
+                     Cfg.delims.ROUTESSTART + '\n' +
                      regStrs.join('\n') + '\n' + 
-                     '    ' + Cfg.delims.ROUTESEND +
+                     '    ' + Cfg.delims.ROUTESEND + '\n' +
                      regExtract.postBlock;
     indexFile.saveData();
   },
@@ -50,29 +51,29 @@ var RouteController = {
     var indexFile = new File(path.resolve(workingPath,Cfg.path.ROUTER));
 
     // imports
-    var importExtract = StrUtil.extractBlock(indexFile.data, Cfg.delims.ROUTESIMPORTSTART,Cfg.delims.ROUTESIMPORTEND);
-    var importStrs = importExtract.block.split('\n').filter(function(val){
+    var importExtract = StrUtil.extractBlock(indexFile.data, Cfg.delimsRegex.ROUTESIMPORTSTART,Cfg.delimsRegex.ROUTESIMPORTEND);
+    var importStrs = importExtract.block.split(NEWLINEREGEX).filter(function(val){
       return val && typeof val === 'string' && val.trim();
     }).filter(function(val){
       return !val.includes(compName);
     });
     indexFile.data = importExtract.preBlock +
-                     Cfg.delims.ROUTESIMPORTSTART +
+                     Cfg.delims.ROUTESIMPORTSTART + '\n' +
                      importStrs.join('\n') + (importStrs.length?'\n':'') + 
-                     Cfg.delims.ROUTESIMPORTEND +
+                     Cfg.delims.ROUTESIMPORTEND + '\n' +
                      importExtract.postBlock;
     
     // router unregistration
-    var regExtract = StrUtil.extractBlock(indexFile.data, Cfg.delims.ROUTESSTART, Cfg.delims.ROUTESEND);
-    var regStrs = regExtract.block.split('},\n').filter(function(val){
+    var regExtract = StrUtil.extractBlock(indexFile.data, Cfg.delimsRegex.ROUTESSTART, Cfg.delimsRegex.ROUTESEND);
+    var regStrs = regExtract.block.split(/},\r?\n/).filter(function(val){
       return val && typeof val === 'string' && val.trim();
     }).filter(function(val){
       return !val.includes(compName);
     });
     indexFile.data = regExtract.preBlock +
-                     Cfg.delims.ROUTESSTART +
+                     Cfg.delims.ROUTESSTART + '\n' +
                      regStrs.join('},\n') + (regStrs.length?'},\n':'') + 
-                     '    ' + Cfg.delims.ROUTESEND +
+                     '    ' + Cfg.delims.ROUTESEND +  '\n' +
                      regExtract.postBlock;
     indexFile.saveData();
   },
