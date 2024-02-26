@@ -1,6 +1,6 @@
 {
   "name": "mkvue",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A NodeJS command line utility to assist in the creation of VueJS v3 applications built using Vite's own scaffolded project.",
   "main": "index.js",
   "bin": {
