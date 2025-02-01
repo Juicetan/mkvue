@@ -1,19 +1,21 @@
-var Deferred = require('../models/deferred');
-var fs = require('fs');
-var fse = require('fs-extra');
-var path = require('path');
+import Deferred from '../models/deferred.mjs';
+import fs from 'fs-extra';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-var Cfg = require('../config/cfg');
-var StrUtil = require('../utils/string');
-var FileUtil = require('../utils/file');
+import Cfg from '../config/cfg.mjs';
+import StrUtil from '../utils/string.mjs';
+import FileUtil from '../utils/file.mjs';
 
 var TEMPLATEPATH = path.resolve(__dirname,'../res/model');
 
-var ModelController = {
+export default {
   createFiles: function(templatePath, newCompPath, compLabel, compName){
     var def = new Deferred();
 
-    fse.copy(templatePath, newCompPath).then(function(){
+    fs.copy(templatePath, newCompPath).then(function(){
       fs.renameSync(path.resolve(newCompPath,'./'+compLabel+'.js'),path.resolve(newCompPath,'./'+compName+'.js'));
 
       def.resolve();
@@ -55,5 +57,3 @@ var ModelController = {
     console.log('> removed model file');
   }
 };
-
-module.exports = ModelController;

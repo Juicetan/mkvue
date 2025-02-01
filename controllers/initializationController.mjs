@@ -1,9 +1,15 @@
-var fse = require('fs-extra');
-var Deferred = require('../models/deferred');
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-var fsUtil = require('../utils/file');
+import fs from 'fs-extra';
+import Deferred from '../models/deferred.mjs';
 
-var InitializationController = {
+
+import fsUtil from '../utils/file.mjs';
+
+export default {
   replaceProjectName: function(path,projectName){
     console.log('> setting project name',projectName);
     return Promise.settle([
@@ -24,8 +30,8 @@ var InitializationController = {
     path = path.replace(folderName,cleansedFolderName);
     folderName = cleansedFolderName;
 
-    fse.ensureDirSync(path);
-    fse.copy(__dirname+'/../res/project',path).then(function(){
+    fs.ensureDirSync(path);
+    fs.copy(__dirname+'/../res/project',path).then(function(){
       console.log('> project template created',path);
       return con.replaceProjectName(path,folderName);
     }).then(function(){
@@ -35,5 +41,3 @@ var InitializationController = {
     return def.promise;
   }
 };
-
-module.exports = InitializationController;

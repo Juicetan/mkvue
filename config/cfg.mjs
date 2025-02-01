@@ -21,4 +21,4 @@ var CFG = {
 };
 
 
-module.exports = CFG;
+export default CFG;

@@ -41,4 +41,4 @@ var Deferred = function(){
   this.catch = this.promise.catch.bind(this.promise);
 };
 
-module.exports = Deferred;
+export default Deferred;

@@ -1,10 +1,13 @@
-var fs = require('fs');
-var path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-var Cfg = require('../config/cfg');
-var StrUtil = require('../utils/string');
-var File = require('../models/file');
-var CompCon = require('./componentController');
+import Cfg from '../config/cfg.mjs';
+import StrUtil from '../utils/string.mjs';
+import File from '../models/file.mjs';
+import CompCon from './componentController.mjs';
 
 const TEMPLATEPATH = path.resolve(__dirname,'../res/route');
 const NEWLINEREGEX = /\r?\n/;
@@ -103,4 +106,4 @@ var RouteController = {
   }
 };
 
-module.exports = RouteController;
+export default RouteController;

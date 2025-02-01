@@ -1,11 +1,11 @@
-var replace = require('replace-in-file');
-var Deferred = require('../models/deferred');
+import { replaceInFile } from 'replace-in-file';
+import Deferred from '../models/deferred.mjs';
 
-var FileUtil = {
-  replace: function(fileSelector,searchRegex,replaceStr){
+export default {
+  replace: function(fileSelector, searchRegex, replaceStr){
     var def = new Deferred();
     
-    replace({
+    replaceInFile({
       files: fileSelector,
       from: searchRegex,
       to: replaceStr
@@ -23,6 +23,3 @@ var FileUtil = {
               .replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
   },
 };
-
-
-module.exports = FileUtil;

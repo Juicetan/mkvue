@@ -1,4 +1,4 @@
-var fs = require('fs');
+import fs from 'fs';
 
 function File(path){
   this.initData(path);
@@ -15,4 +15,4 @@ File.prototype.saveData = function(){
   return fs.writeFileSync(this.path,this.data);
 };
 
-module.exports = File;
+export default File;
