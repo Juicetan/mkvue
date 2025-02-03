@@ -17,7 +17,9 @@ export default {
   </div>
 </template>
 
-<style>
+<style scoped lang="scss">
+@use '../assets/css/_variables' as *;
+@use '../assets/css/_mixins' as *;
 .routeview{
   position: relative;
   height: 100%;

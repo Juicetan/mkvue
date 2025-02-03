@@ -13,7 +13,8 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/css/_mixins';
+@use '../assets/css/_variables' as *;
+@use '../assets/css/_mixins' as *;
 .component{
 }
 </style>
