@@ -1,9 +1,7 @@
-function Model(){
+class Model{
+  constructor(){
 
-};
-
-Model.prototype = {
-
-};
+  }
+}
 
 export default Model;
