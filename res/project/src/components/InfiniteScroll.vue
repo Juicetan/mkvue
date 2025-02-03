@@ -39,7 +39,7 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/css/_mixins';
+@use "../assets/css/_mixins" as *;
 .infinite-scroll{
   @include miniscroll;
   overflow-y: auto;

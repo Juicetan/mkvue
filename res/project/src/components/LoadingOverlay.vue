@@ -10,7 +10,7 @@
 </template>
 
 <style scoped lang="scss">
-@import '../assets/css/_variables';
+@use "../assets/css/_variables" as *;
 .loading-overlay {
   position: absolute;
   top: 0;

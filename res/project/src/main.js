@@ -8,6 +8,8 @@ import router from './router'
 import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css"
 
+import Pkg from '../package.json';
+
 import './assets/css/main.scss'
 
 
@@ -85,4 +87,8 @@ app.evt.on(app.actions.LOADING, function(bool, noDelay){
   }
 })
 
+app.meta = {
+  name: Pkg.name,
+  version: Pkg.version
+};
 window.App = app;

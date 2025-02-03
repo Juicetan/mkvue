@@ -1,25 +1,25 @@
 #!/usr/bin/env node
 
-var cmd = require('commander');
-var InitCon = require('./controllers/initializationController');
-var CompCon = require('./controllers/componentController');
-var RouteCon = require('./controllers/routeController');
-var ModelCon = require('./controllers/modelController');
+import { program } from 'commander';
+import InitCon from './controllers/initializationController.mjs';
+import CompCon from './controllers/componentController.mjs';
+import RouteCon from './controllers/routeController.mjs';
+import ModelCon from './controllers/modelController.mjs';
 
-var package = require('./package.json');
+import pkg from './package.json' assert { type: 'json' };
 
-cmd
-  .version(package.version)
-  .description(package.description);
+program
+  .version(pkg.version)
+  .description(pkg.description);
 
-cmd.command('project [path]')
+program.command('project [path]')
   .description('Create boilerplate project.  If no path is provided current working directory will be used.')
   .action(function(path){
     path = path || '.';
     InitCon.setupProject(path);
   });
 
-cmd.command('component <componentName>')
+program.command('component <componentName>')
   .option('-r, --remove', 'Remove component')
   .action(function(componentName, opts){
     var path = process.cwd();
@@ -30,7 +30,7 @@ cmd.command('component <componentName>')
     }
   });
 
-cmd.command('route <routeName>')
+program.command('route <routeName>')
   .option('-r, --remove', 'Remove route')
   .action(function(routeName, opts){
     var path = process.cwd();
@@ -41,7 +41,7 @@ cmd.command('route <routeName>')
     }
   });
 
-cmd.command('model <modelName>')
+program.command('model <modelName>')
   .option('-r, --remove', 'Remove model')
   .action(function(modelName, opts){
     var path = process.cwd();
@@ -52,10 +52,4 @@ cmd.command('model <modelName>')
     }
   });
   
-cmd.parse(process.argv);
-
-var App = {
-  init: function(path){
-    
-  }
-};
+program.parse();

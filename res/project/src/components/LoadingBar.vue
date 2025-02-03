@@ -7,8 +7,12 @@
 </template>
 
 <style scoped lang="scss">
-@import '../assets/css/_variables';
+@use "../assets/css/_variables" as *;
 .loading-bar {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background-color: transparent;
   @keyframes loading {
     from {
       left: 50%;
@@ -25,10 +29,6 @@
       width: 100%;
     }
   }
-  position: relative;
-  width: 100%;
-  height: 8px;
-  background-color: transparent;
   .bar {
     content: '';
     display: inline;
