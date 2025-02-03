@@ -1,8 +1,8 @@
-@import './base.css';
+@use "./base.css" as *;
 
-@import 'overrides';
-@import 'variables';
-@import 'mixins';
+@use "overrides" as *;
+@use "variables" as *;
+@use "mixins" as *;
 
 #app{
   position: relative;

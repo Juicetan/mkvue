@@ -25,7 +25,7 @@ export default {
 </template>
 
 <style scoped lang="scss">
-@import '../assets/css/_mixins';
+@use "../assets/css/_mixins" as *;
 .toggle-switch{
   .toggle-label{
     display: inline-block;
